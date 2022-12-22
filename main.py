@@ -154,7 +154,6 @@ def main():
     train_set, dev_set, test_set, vocab, dec_num = prepare_data_seq(
         batch_size=config.batch_size
     )
-
     model = make_model(vocab, dec_num)
 
     if config.test:

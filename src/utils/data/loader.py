@@ -139,7 +139,6 @@ def read_files(vocab):
     train_files = [np.load(f, allow_pickle=True) for f in files["train"]]
     dev_files = [np.load(f, allow_pickle=True) for f in files["dev"]]
     test_files = [np.load(f, allow_pickle=True) for f in files["test"]]
-
     data_train = encode(vocab, train_files)
     data_dev = encode(vocab, dev_files)
     data_test = encode(vocab, test_files)
@@ -209,8 +208,6 @@ class Dataset(data.Dataset):
         )
         
         item["context"], item["context_mask"] = self.preprocess(item["context_text"])
-        '''print(item["context_text"])
-        print(item["context"])'''
         item["target"] = self.preprocess(item["target_text"], anw=True)
         item["emotion"], item["emotion_label"] = self.preprocess_emo(
             item["emotion_text"], self.emo_map
@@ -236,6 +233,7 @@ class Dataset(data.Dataset):
         return item
 
     def preprocess(self, arr, anw=False, cs=None, emo=False):
+        
         """Converts words to ids."""
         if anw:
             sequence = [
@@ -356,6 +354,7 @@ def prepare_data_seq(batch_size=32):
 
     pairs_tra, pairs_val, pairs_tst, vocab = load_dataset()
     logging.info("Vocab  {} ".format(vocab.n_words))
+
     dataset_train = Dataset(pairs_tra, vocab)
     data_loader_tra = torch.utils.data.DataLoader(
         dataset=dataset_train,
@@ -372,6 +371,7 @@ def prepare_data_seq(batch_size=32):
         collate_fn=collate_fn,
     )
     dataset_test = Dataset(pairs_tst, vocab)
+    print(pairs_tst.keys())
     data_loader_tst = torch.utils.data.DataLoader(
         dataset=dataset_test, batch_size=1, shuffle=False, collate_fn=collate_fn
     )

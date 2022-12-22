@@ -697,7 +697,7 @@ def gen_embeddings(vocab):
     if config.emb_file is not None:
         print("Loading embedding file: %s" % config.emb_file)
         pre_trained = 0
-        for line in open(config.emb_file).readlines():
+        for line in open(config.emb_file,encoding='utf-8').readlines():
             sp = line.split()
             if len(sp) == config.emb_dim + 1:
                 if sp[0] in vocab.word2index:
@@ -801,6 +801,7 @@ def get_attn_key_pad_mask(seq_k, seq_q):
 
 
 def get_input_from_batch(batch):
+    #print(batch)
     enc_batch = batch["input_batch"]
     enc_lens = batch["input_lengths"]
     enc_txt = batch["input_txt"]
@@ -923,6 +924,7 @@ def evaluate(model, data, ty="valid", max_dec_step=30):
     if config.model != "empdg":
         t = Translator(model, model.vocab)
     for j, batch in pbar:
+        print(batch)
         if config.model == "cem":
             loss, ppl, bce_prog, acc_prog, top_preds, comet_res = model.train_one_batch(
                 batch, 0, train=False

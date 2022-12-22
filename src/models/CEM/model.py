@@ -744,3 +744,7 @@ class CEM(nn.Module):
                     st += e + " "
             sent.append(st)
         return sent
+
+    def chatmodel(model, sys_input,max_dec_step=50):
+        sent_g = model.decoder_greedy(sys_input, max_dec_step=max_dec_step)
+        return sent_g

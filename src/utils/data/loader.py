@@ -207,8 +207,10 @@ class Dataset(data.Dataset):
         item["context_emotion_scores"] = self.analyzer.polarity_scores(
             " ".join(self.data["context"][index][0])
         )
-
+        
         item["context"], item["context_mask"] = self.preprocess(item["context_text"])
+        '''print(item["context_text"])
+        print(item["context"])'''
         item["target"] = self.preprocess(item["target_text"], anw=True)
         item["emotion"], item["emotion_label"] = self.preprocess_emo(
             item["emotion_text"], self.emo_map
@@ -285,7 +287,6 @@ class Dataset(data.Dataset):
                 )
                 x_mask += [spk for _ in range(len(sentence))]
             assert len(x_dial) == len(x_mask)
-
             return torch.LongTensor(x_dial), torch.LongTensor(x_mask)
 
     def preprocess_emo(self, emotion, emo_map):
@@ -309,7 +310,6 @@ def collate_fn(data):
     item_info = {}
     for key in data[0].keys():
         item_info[key] = [d[key] for d in data]
-
     ## input
     input_batch, input_lengths = merge(item_info["context"])
     mask_input, mask_input_lengths = merge(item_info["context_mask"])
@@ -355,9 +355,7 @@ def collate_fn(data):
 def prepare_data_seq(batch_size=32):
 
     pairs_tra, pairs_val, pairs_tst, vocab = load_dataset()
-
     logging.info("Vocab  {} ".format(vocab.n_words))
-
     dataset_train = Dataset(pairs_tra, vocab)
     data_loader_tra = torch.utils.data.DataLoader(
         dataset=dataset_train,

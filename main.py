@@ -145,7 +145,7 @@ def test(model, test_set):
             )
         )
         for r in results:
-            f.write(r)
+            f.write(r, encoding='UTF-8')
 
 
 def main():

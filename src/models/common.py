@@ -801,12 +801,10 @@ def get_attn_key_pad_mask(seq_k, seq_q):
 
 
 def get_input_from_batch(batch):
-    
     enc_batch = batch["input_batch"]
     enc_lens = batch["input_lengths"]
     enc_txt = batch["input_txt"]
     batch_size, max_enc_len = enc_batch.size()
-    print("size",batch_size)
     assert len(enc_lens) == batch_size
 
     enc_padding_mask = sequence_mask(enc_lens, max_len=max_enc_len).float()
@@ -920,12 +918,11 @@ def evaluate(model, data, ty="valid", max_dec_step=30):
     acc = []
     top_preds = []
     comet_res = []
-    pbar = tqdm(enumerate(data), total=len(data))
+    pbar = tqdm(enumerate(data), total=2)
 
     if config.model != "empdg":
         t = Translator(model, model.vocab)
     for j, batch in pbar:
-        #print("start!!!!!!!!!!!!!",batch,"end!!!!!!!!!!!!!!!!")
         if config.model == "cem":
             loss, ppl, bce_prog, acc_prog, top_preds, comet_res = model.train_one_batch(
                 batch, 0, train=False

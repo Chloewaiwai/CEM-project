@@ -71,11 +71,34 @@ def get_commonsense(comet, item, data_dict):
         cs_res = [process_sent(item) for item in cs_res]
         cs_list.append(cs_res)
 
-    data_dict["utt_cs"].append(cs_list)
+    data_dict["utt_cs"]=cs_list
+    '''cs_list = []
+    input_event = " ".join(item)
+    for rel in relations:
+        cs_res = comet.generate(input_event, rel)
+        cs_res = [process_sent(item) for item in cs_res]
+        cs_list.append(cs_res)
+
+    data_dict["utt_cs"].append(cs_list)'''
 
 
-def encode_ctx(vocab, items, data_dict, comet):
-    for ctx in tqdm(items):
+def encode_ctx(items, data_dict, comet):
+    e_list=[]
+    ctx = process_sent(items)
+    ws_pos = nltk.pos_tag(ctx)  # pos
+    for w in ws_pos:
+        w_p = get_wordnet_pos(w[1])
+        if w[0] not in stop_words and (
+            w_p == wordnet.ADJ or w[0] in emotion_lexicon
+        ):
+            e_list.append(w[0])
+    get_commonsense(comet, ctx, data_dict)
+
+    data_dict["context"]=[ctx]
+    data_dict["emotion_context"].append(e_list)
+
+    
+    '''for ctx in tqdm(items):
         ctx_list = []
         e_list = []
         for i, c in enumerate(ctx):
@@ -93,7 +116,7 @@ def encode_ctx(vocab, items, data_dict, comet):
                 get_commonsense(comet, item, data_dict)
 
         data_dict["context"].append(ctx_list)
-        data_dict["emotion_context"].append(e_list)
+        data_dict["emotion_context"].append(e_list)'''
 
 
 def encode(vocab, files):
@@ -212,10 +235,7 @@ class Dataset(data.Dataset):
         item["emotion"], item["emotion_label"] = self.preprocess_emo(
             item["emotion_text"], self.emo_map
         )
-        (
-            item["emotion_context"],
-            item["emotion_context_mask"],
-        ) = self.preprocess(item["emotion_context"])
+        item["emotion_context"],item["emotion_context_mask"] = self.preprocess(item["emotion_context"])
 
         item["cs_text"] = self.data["utt_cs"][index]
         item["x_intent_txt"] = item["cs_text"][0]
@@ -229,7 +249,6 @@ class Dataset(data.Dataset):
         item["x_want"] = self.preprocess(item["x_want_txt"], cs=True)
         item["x_effect"] = self.preprocess(item["x_effect_txt"], cs=True)
         item["x_react"] = self.preprocess(item["x_react_txt"], cs="react")
-
         return item
 
     def preprocess(self, arr, anw=False, cs=None, emo=False):
@@ -371,7 +390,6 @@ def prepare_data_seq(batch_size=32):
         collate_fn=collate_fn,
     )
     dataset_test = Dataset(pairs_tst, vocab)
-    print(pairs_tst.keys())
     data_loader_tst = torch.utils.data.DataLoader(
         dataset=dataset_test, batch_size=1, shuffle=False, collate_fn=collate_fn
     )

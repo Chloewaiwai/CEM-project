@@ -1,3 +1,4 @@
+from tqdm import tqdm
 ### TAKEN FROM https://github.com/kolloldas/torchnlp
 import os
 import torch
@@ -745,6 +746,11 @@ class CEM(nn.Module):
             sent.append(st)
         return sent
 
-    def chatmodel(model, sys_input,max_dec_step=50):
-        sent_g = model.decoder_greedy(sys_input, max_dec_step=max_dec_step)
+    def chatmodel(model,sys_input,max_dec_step=30):
+        model.__id__logger = 0
+        print(sys_input)
+        pbar = tqdm(enumerate(sys_input), total=len(sys_input))
+        
+        for batch in pbar:
+            sent_g = model.decoder_greedy(batch[1], max_dec_step=max_dec_step)
         return sent_g

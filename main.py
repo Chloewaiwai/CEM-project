@@ -53,6 +53,7 @@ def make_model(vocab, dec_num):
             model_file_path=config.model_path if is_eval else None,
         )
     elif config.model == "cem":
+        print(config.model_path)
         model = CEM(
             vocab,
             decoder_number=dec_num,
@@ -145,7 +146,7 @@ def test(model, test_set):
             )
         )
         for r in results:
-            f.write(r, encoding='UTF-8')
+            f.write(r)
 
 
 def main():
@@ -155,7 +156,6 @@ def main():
         batch_size=config.batch_size
     )
     model = make_model(vocab, dec_num)
-
     if config.test:
         test(model, test_set)
     else:

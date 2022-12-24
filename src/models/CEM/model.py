@@ -748,7 +748,6 @@ class CEM(nn.Module):
 
     def chatmodel(model,sys_input,max_dec_step=30):
         model.__id__logger = 0
-        print(sys_input)
         pbar = tqdm(enumerate(sys_input), total=len(sys_input))
         
         for batch in pbar:

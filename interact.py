@@ -26,20 +26,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import nltk
 
 
-sentence="I finally finish half of my final project!"
 
-#sentence="I am going to meet my boyfriend!"
-data_dict = {
-        "context": [],
-        "emotion_context": [],
-        "utt_cs": [],
-    }
-
-
-relations = ["xIntent", "xNeed", "xWant", "xEffect", "xReact"]
-comet = Comet("data\comet-atomic_2020_BART", config.device)
-
-encode_ctx(sentence,data_dict,comet)
 
 class Dataset(data.Dataset):
     """Custom data.Dataset compatible with data.DataLoader."""
@@ -183,25 +170,37 @@ def collate_fn(data):
 train_set, dev_set, test_set, vocab, dec_num = prepare_data_seq(
     batch_size=config.batch_size
 )
-dataset_input = Dataset(data_dict, vocab)
-data_loader_tst = torch.utils.data.DataLoader(
-    dataset=dataset_input, batch_size=1, shuffle=False, collate_fn=collate_fn
-)
-print(data_loader_tst)
-dec_num=len(dataset_input.emo_map)
-
 model = CEM(
             vocab,
-            decoder_number=dec_num,
+            decoder_number=32,
             is_eval=True,
             model_file_path='save\CEM_19999_41.8034',
         )
 model.to(config.device)
 model.eval()
 model.is_eval = True
-reply=CEM.chatmodel(model,data_loader_tst,max_dec_step=50)
-print(" ")
-print("[context]:", [" ".join(u) for u in data_dict["context"]])
-print(" ")
+relations = ["xIntent", "xNeed", "xWant", "xEffect", "xReact"]
+comet = Comet("data\comet-atomic_2020_BART", config.device)
+logging.info("Model is built.")
+chatting=True
+while chatting:
+    sentence=input("You: ")
+    if sentence == "end" or sentence == "":
+        chatting=False
+        print("Bot: Bye!")
+        break
+    #sentence="I am going to meet my boyfriend!"
+    data_dict = {
+            "context": [],
+            "emotion_context": [],
+            "utt_cs": [],
+        }
 
-print(reply)
+    encode_ctx(sentence,data_dict,comet)
+    dataset_input = Dataset(data_dict, vocab)
+    data_loader_tst = torch.utils.data.DataLoader(
+        dataset=dataset_input, batch_size=1, shuffle=False, collate_fn=collate_fn
+    )
+    reply=CEM.chatmodel(model,data_loader_tst,max_dec_step=50)
+    for u in reply:
+        print("Bot:", u)

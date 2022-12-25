@@ -182,13 +182,9 @@ model.is_eval = True
 relations = ["xIntent", "xNeed", "xWant", "xEffect", "xReact"]
 comet = Comet("data\comet-atomic_2020_BART", config.device)
 logging.info("Model is built.")
-chatting=True
-while chatting:
-    sentence=input("You: ")
-    if sentence == "end" or sentence == "":
-        chatting=False
-        print("Bot: Bye!")
-        break
+
+def get_response(msg,name):
+   
     #sentence="I am going to meet my boyfriend!"
     data_dict = {
             "context": [],
@@ -196,11 +192,20 @@ while chatting:
             "utt_cs": [],
         }
 
-    encode_ctx(sentence,data_dict,comet)
+    encode_ctx(msg,data_dict,comet)
     dataset_input = Dataset(data_dict, vocab)
     data_loader_tst = torch.utils.data.DataLoader(
         dataset=dataset_input, batch_size=1, shuffle=False, collate_fn=collate_fn
     )
-    reply=CEM.chatmodel(model,data_loader_tst,max_dec_step=50)
+    return CEM.chatmodel(model,data_loader_tst,max_dec_step=50)
+    
+
+while True:
+    sentence=input("You: ")
+    if sentence == "end" or sentence == "":
+        print("Bot: Bye!")
+        break
+
+    reply=get_response(sentence,"chloe")
     for u in reply:
         print("Bot:", u)

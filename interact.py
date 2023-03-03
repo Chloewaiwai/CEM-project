@@ -1,29 +1,21 @@
 from src.models.CEM.model import CEM 
+from src.models.MOEL.model import MOEL
+from src.models.MIME.model import MIME
+from src.models.EMPDG.model import EMPDG
 from src.utils import config
 from src.utils.data.loader import prepare_data_seq
 from src.utils.data.loader import Dataset
-from src.utils.data.loader import Lang
 from src.utils.data.loader import encode_ctx
 from src.utils.comet import Comet
 import torch.utils.data as data
 import torch
-import os
-import nltk
-import json
 import torch
-import pickle
 import logging
-import numpy as np
-from tqdm.auto import tqdm
 from src.utils import config
 import torch.utils.data as data
 from src.utils.common import save_config
-from nltk.corpus import wordnet, stopwords
-from src.utils.constants import DATA_FILES
 from src.utils.constants import EMO_MAP as emo_map
-from src.utils.constants import WORD_PAIRS as word_pairs
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-import nltk
 
 
 
@@ -198,14 +190,17 @@ def get_response(msg,name):
         dataset=dataset_input, batch_size=1, shuffle=False, collate_fn=collate_fn
     )
     return CEM.chatmodel(model,data_loader_tst,max_dec_step=50)
-    
 
-while True:
-    sentence=input("You: ")
-    if sentence == "end" or sentence == "":
-        print("Bot: Bye!")
-        break
+if __name__ == "__main__":
+    print("==================================")    
+    print("TEDDY: Hey there! How's you going?")
+    while True:
+        sentence=input("You: ")
+        if sentence == "bye" or sentence == "":
+            print("Bot: Bye!")
+            print("==================================")
+            break
 
-    reply=get_response(sentence,"chloe")
-    for u in reply:
-        print("Bot:", u)
+        reply=get_response(sentence,"chloe")
+        for u in reply:
+            print("TEDDY:", u)

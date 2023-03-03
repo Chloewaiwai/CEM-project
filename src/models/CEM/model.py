@@ -748,7 +748,7 @@ class CEM(nn.Module):
 
     def chatmodel(model,sys_input,max_dec_step=30):
         model.__id__logger = 0
-        pbar = tqdm(enumerate(sys_input), total=len(sys_input))
+        pbar = tqdm(enumerate(sys_input), total=len(sys_input), disable=True)
         
         for batch in pbar:
             sent_g = model.decoder_greedy(batch[1], max_dec_step=max_dec_step)

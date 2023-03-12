@@ -752,4 +752,6 @@ class CEM(nn.Module):
         
         for batch in pbar:
             sent_g = model.decoder_greedy(batch[1], max_dec_step=max_dec_step)
-        return sent_g
+            emotions=batch[1]['x_react_txt'][0]
+            response=[sent_g,emotions]
+        return response

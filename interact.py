@@ -175,7 +175,7 @@ relations = ["xIntent", "xNeed", "xWant", "xEffect", "xReact"]
 comet = Comet("data\comet-atomic_2020_BART", config.device)
 logging.info("Model is built.")
 
-def get_response(msg,name):
+def get_response(msg):
    
     #sentence="I am going to meet my boyfriend!"
     data_dict = {
@@ -201,6 +201,6 @@ if __name__ == "__main__":
             print("==================================")
             break
 
-        reply=get_response(sentence,"chloe")
-        for u in reply:
-            print("TEDDY:", u)
+        reply=get_response(sentence)
+        print("TEDDY:", reply[0])
+        print("emotions",reply[1])

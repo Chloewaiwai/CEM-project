@@ -16,6 +16,8 @@ import torch.utils.data as data
 from src.utils.common import save_config
 from src.utils.constants import EMO_MAP as emo_map
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from src.utils.constants import EMOJI_MAP as emoji_map
+import random
 
 
 
@@ -175,6 +177,11 @@ relations = ["xIntent", "xNeed", "xWant", "xEffect", "xReact"]
 comet = Comet("data\comet-atomic_2020_BART", config.device)
 logging.info("Model is built.")
 
+def get_emoji(emotion):
+    #emoji= emoji_map.get(emotion_word)
+    emoji= emoji_map.get(emotion[0])
+    return emoji
+
 def get_response(msg):
    
     #sentence="I am going to meet my boyfriend!"
@@ -202,5 +209,9 @@ if __name__ == "__main__":
             break
 
         reply=get_response(sentence)
-        print("TEDDY:", reply[0])
-        print("emotions",reply[1])
+        print("emotion", reply)
+        random_item = random.choice(reply[1])
+        print("emotion", random_item)
+        emoji=get_emoji(random_item)
+        print("TEDDY:", reply)
+        print("emotions",emoji)

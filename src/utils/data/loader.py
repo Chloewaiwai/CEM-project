@@ -69,6 +69,10 @@ def get_commonsense(comet, item, data_dict):
     for rel in relations:
         cs_res = comet.generate(input_event, rel)
         cs_res = [process_sent(item) for item in cs_res]
+        for item in cs_res:
+            for index,i in enumerate(item):
+                if i.isalpha()==False:
+                    item.pop(index)
         cs_list.append(cs_res)
 
     data_dict["utt_cs"]=cs_list

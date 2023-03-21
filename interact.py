@@ -177,10 +177,14 @@ relations = ["xIntent", "xNeed", "xWant", "xEffect", "xReact"]
 comet = Comet("data\comet-atomic_2020_BART", config.device)
 logging.info("Model is built.")
 
-def get_emoji(emotion):
+def get_emoji(emotions):
     #emoji= emoji_map.get(emotion_word)
-    emoji= emoji_map.get(emotion[0])
-    return emoji
+    print(emotions)
+    for emotion in emotions:
+        if emotion[0] in emoji_map:
+            emoji= emoji_map.get(emotion[0])
+            return emoji
+        
 
 def get_response(msg):
    
@@ -209,9 +213,7 @@ if __name__ == "__main__":
             break
 
         reply=get_response(sentence)
-        print("emotion", reply)
-        random_item = random.choice(reply[1])
-        print("emotion", random_item)
-        emoji=get_emoji(random_item)
-        print("TEDDY:", reply)
-        print("emotions",emoji)
+        
+        print("emotion", reply[0])
+        emoji=get_emoji(reply[1])
+        print("TEDDY:", reply[0][0],emoji)

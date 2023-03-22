@@ -183,7 +183,7 @@ def get_emoji(emotions):
     for emotion in emotions:
         if emotion[0] in emoji_map:
             emoji= emoji_map.get(emotion[0])
-            return emoji
+            return emoji,emotion[0]
         
 
 def get_response(msg):

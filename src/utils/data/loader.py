@@ -199,12 +199,12 @@ def load_dataset():
             pickle.dump([data_tra, data_val, data_tst, vocab], f)
             print("Saved PICKLE")
 
-    for i in range(3):
+    '''for i in range(3):
         print("[situation]:", " ".join(data_tra["situation"][i]))
         print("[emotion]:", data_tra["emotion"][i])
         print("[context]:", [" ".join(u) for u in data_tra["context"][i]])
         print("[target]:", " ".join(data_tra["target"][i]))
-        print(" ")
+        print(" ")'''
     return data_tra, data_val, data_tst, vocab
 
 

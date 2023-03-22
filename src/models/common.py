@@ -693,9 +693,9 @@ def gen_embeddings(vocab):
     a randomly initialized vector will be used.
     """
     embeddings = np.random.randn(vocab.n_words, config.emb_dim) * 0.01
-    print("Embeddings: %d x %d" % (vocab.n_words, config.emb_dim))
+    #print("Embeddings: %d x %d" % (vocab.n_words, config.emb_dim))
     if config.emb_file is not None:
-        print("Loading embedding file: %s" % config.emb_file)
+        #print("Loading embedding file: %s" % config.emb_file)
         pre_trained = 0
         for line in open(config.emb_file,encoding='utf-8').readlines():
             sp = line.split()

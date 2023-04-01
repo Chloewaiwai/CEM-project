@@ -1,7 +1,7 @@
 from flask import Flask,request, jsonify
 from flask_cors import CORS
 from interact import get_response,get_emoji
-
+from temp import Blenderbot
 
 app = Flask(__name__)
 CORS(app)
@@ -9,9 +9,15 @@ CORS(app)
 @app.route("/chatroom/predict", methods=["POST"])
 def predict():
     text = request.get_json().get("message")
-    response = get_response(text)
-    emoji,emotion=get_emoji(response[1])
-    response=response[0][0]+emoji
+    if "?" in text:
+        blenderbot = Blenderbot("facebook/blenderbot_small-90M")
+        response = blenderbot.generate(text)
+        emotion = "blender"
+    else:
+        response = get_response(text)
+        emoji,emotion=get_emoji(response[1])
+        response=response[0][0]+emoji
+    
     message = {"teddyResponse" : response, "receivedEmotion" :emotion}
     return jsonify(message)
 

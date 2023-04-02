@@ -13,6 +13,7 @@ import torch.utils.data as data
 from src.utils.constants import EMO_MAP as emo_map
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from src.utils.constants import EMOJI_MAP as emoji_map
+import random
 
 
 
@@ -174,6 +175,8 @@ logging.info("Model is built.")
 
 def get_emoji(emotions):
     #emoji= emoji_map.get(emotion_word)
+    print(emotions)
+    random.shuffle(emotions)
     print(emotions)
     for emotion in emotions:
         if emotion[0] in emoji_map:

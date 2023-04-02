@@ -178,3 +178,4 @@ EMOJI_MAP = {
     'bored': '😑',
     'uninterested': '😐'
 }
+Question_word = ['who','which','how','who','where','what','when']

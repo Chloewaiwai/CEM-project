@@ -1,7 +1,8 @@
 from flask import Flask,request, jsonify
 from flask_cors import CORS
 from interact import get_response,get_emoji
-from temp import Blenderbot
+from blenderbot import Blenderbot
+from src.utils.constants import Question_word as question_word
 
 app = Flask(__name__)
 CORS(app)
@@ -9,7 +10,8 @@ CORS(app)
 @app.route("/chatroom/predict", methods=["POST"])
 def predict():
     text = request.get_json().get("message")
-    if "?" in text:
+    words = text.lower().split()
+    if any(word in question_word for word in words) or "?" in text:
         blenderbot = Blenderbot("facebook/blenderbot_small-90M")
         response = blenderbot.generate(text)
         emotion = "blender"

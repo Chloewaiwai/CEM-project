@@ -14,8 +14,9 @@ from src.utils.constants import EMO_MAP as emo_map
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from src.utils.constants import EMOJI_MAP as emoji_map
 import random
+from blenderbot import Blenderbot
 
-
+from src.utils.constants import Positive_emotions as positive_emotions
 
 
 class Dataset(data.Dataset):
@@ -175,14 +176,18 @@ logging.info("Model is built.")
 
 def get_emoji(emotions):
     #emoji= emoji_map.get(emotion_word)
-    print(emotions)
     random.shuffle(emotions)
-    print(emotions)
     for emotion in emotions:
         if emotion[0] in emoji_map:
             emoji= emoji_map.get(emotion[0])
-            return emoji,emotion[0]
-        
+            emotion=check_positive(emotion[0])
+            return emoji,emotion
+
+def check_positive(emotion):
+     if emotion in positive_emotions:
+         return "happy"
+     else:
+         return "sad"
 
 def get_response(msg):
    
@@ -210,8 +215,6 @@ if __name__ == "__main__":
             print("==================================")
             break
 
-        reply=get_response(sentence)
-        
-        print("emotion", reply[0])
-        emoji=get_emoji(reply[1])
-        print("TEDDY:", reply[0][0],emoji)
+        blenderbot = Blenderbot("facebook/blenderbot_small-90M")
+        response = blenderbot.generate(sentence)
+        print("TEDDY:", response)

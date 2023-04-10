@@ -178,4 +178,40 @@ EMOJI_MAP = {
     'bored': '😑',
     'uninterested': '😐'
 }
+
+Positive_emotions = {
+    "surprised": "😮",
+    "excited": "🤩",
+    "proud": "👏",
+    "grateful": "😇",
+    "impressed": "🤔",
+    "hopeful": "🤞",
+    "joyful": "😁",
+    "prepared": "🤝",
+    "content": "😊",
+    "devastated": "😞",
+    "sentimental": "🥺",
+    "caring": "🥰",
+    "trusting": "🤝",
+    "faithful": "🙏",
+    'happy': '😊',
+    'elated': '😀',
+    'loving': '😍',
+    'thankful': '🙏',
+    'optimistic': '😃',
+    'amused': '😆',
+    'enthusiastic': '🤗',
+    'inspired': '🌟',
+    'peaceful': '😌',
+    'calm': '🧘',
+    'relaxed': '😎',
+    'satisfied': '😌',
+    'brave': '🦸‍♀️',
+    'motivated': '💪',
+    'curious': '🤔',
+    'interested': '😯'
+}
+
+
 Question_word = ['who','which','how','who','where','what','when']
+Greetings = ["hello", "hi", "hey", "good morning", "good afternoon", "good evening", "Nice to see you"]

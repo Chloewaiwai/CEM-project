@@ -15,12 +15,12 @@ def predict():
     words = text.lower().split()
     is_greeting = False
     for greeting in greeting_word:
-        print(greeting,text)
-        if greeting in text:
+        print(greeting,words)
+        if greeting in words:
             is_greeting = True
             break
 
-    if any(word in question_word for word in words) or "?" in text or is_greeting:
+    if any(word in question_word for word in words) or "?" in words or is_greeting:
         blenderbot = Blenderbot("facebook/blenderbot_small-90M")
         response = blenderbot.generate(text)
         emotion = "blender"
